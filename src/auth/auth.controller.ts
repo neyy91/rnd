@@ -19,6 +19,11 @@ export class AuthController {
     return this.authService.registration(command);
   }
 
+  @Get('test')
+  async test() {
+    return 'test ok';
+  }
+
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
