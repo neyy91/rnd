@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateLangCommand } from 'src/dto/create-lang.command';
 import { Language } from 'src/infrastructure';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 
 @Injectable()
 export class LanguageService {
@@ -13,6 +13,14 @@ export class LanguageService {
 
   async getLanguages() {
     return this.repo.find();
+  }
+
+  async getLanguagesByIds(ids: number[]) {
+    return this.repo.find({
+      where: {
+        id: In(ids),
+      },
+    });
   }
 
   async addLanguage(command: CreateLangCommand) {

@@ -6,8 +6,8 @@ export class Pair {
   id: number;
 
   @Column({ name: 'native_id', nullable: true })
-  nativeId: string;
+  nativeId: number;
 
   @Column({ name: 'study_id', nullable: true })
-  studyId: string;
+  studyId: number;
 }

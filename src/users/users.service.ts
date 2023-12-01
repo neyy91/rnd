@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBasicAccountCommand } from 'src/dto';
 import { Role, User } from 'src/infrastructure';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 
 // export type User = any;
 
@@ -19,6 +19,14 @@ export class UsersService {
 
   async findOne(id: number): Promise<User> {
     return this.usersRepository.findOneBy({ id });
+  }
+
+  async findByIds(ids: number[]): Promise<User[]> {
+    return this.usersRepository.find({
+      where: {
+        id: In(ids),
+      },
+    });
   }
 
   async findByEmail(email: string): Promise<User> {

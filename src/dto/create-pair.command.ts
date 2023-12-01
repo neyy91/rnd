@@ -2,8 +2,8 @@ import { IsString } from 'class-validator';
 
 export class CreatePairCommand {
   @IsString()
-  nativeId: string;
+  nativeId: number;
 
   @IsString()
-  studyId: string;
+  studyId: number;
 }
