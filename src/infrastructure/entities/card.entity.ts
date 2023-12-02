@@ -16,4 +16,6 @@ export class Card {
 
   @Column({ name: 'description', nullable: true })
   description: string;
+
+  isLearn?: boolean;
 }

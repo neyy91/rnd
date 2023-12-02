@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubscribeCommand } from 'src/dto';
 import { Subscriber } from 'src/infrastructure';
@@ -16,7 +16,7 @@ export class SubscriberService {
 
   async getSubscriptions(user) {
     if (user.roleName !== RoleTypeKey.student) {
-      throw new Error('Подписки только для студентов');
+      throw new BadRequestException('Подписки только для студентов');
     }
 
     const subs = await this.repo.findBy({
@@ -33,7 +33,7 @@ export class SubscriberService {
     });
 
     if (exist) {
-      throw new Error('Вы уже подписаны на эту программу');
+      throw new BadRequestException('Вы уже подписаны на эту программу');
     }
 
     const programExist = await this.programService.getProgramById(
@@ -41,7 +41,7 @@ export class SubscriberService {
     );
 
     if (!programExist) {
-      throw new Error('Такой программы еще нет');
+      throw new BadRequestException('Такой программы еще нет');
     }
 
     const sub = this.repo.create({

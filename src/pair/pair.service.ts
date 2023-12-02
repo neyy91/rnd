@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePairCommand } from 'src/dto/create-pair.command';
 import { Pair } from 'src/infrastructure';
@@ -21,7 +21,7 @@ export class PairService {
     const exist = await this.pairRepository.findOneBy(command);
 
     if (exist) {
-      throw new Error('Пара языков уже существует');
+      throw new BadRequestException('Пара языков уже существует');
     }
 
     const pair = this.pairRepository.create(command);

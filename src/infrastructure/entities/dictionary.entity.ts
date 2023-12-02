@@ -8,6 +8,6 @@ export class Dictionary {
   @Column({ name: 'program_id', nullable: true })
   programId: number;
 
-  @Column({ name: 'text', nullable: true })
+  @Column({ name: 'name', nullable: true })
   name: string;
 }

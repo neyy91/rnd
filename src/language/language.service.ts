@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateLangCommand } from 'src/dto/create-lang.command';
 import { Language } from 'src/infrastructure';
@@ -27,7 +27,7 @@ export class LanguageService {
     const exist = await this.repo.findOneBy(command);
 
     if (exist) {
-      throw new Error('Язык уже добавлен');
+      throw new BadRequestException('Язык уже добавлен');
     }
 
     const lang = this.repo.create(command);

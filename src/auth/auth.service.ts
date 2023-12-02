@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateBasicAccountCommand } from 'src/dto';
@@ -26,13 +26,13 @@ export class AuthService {
     const exist = await this.usersService.findByEmail(command.email);
 
     if (exist) {
-      throw new Error('Email уже используется');
+      throw new BadRequestException('Email уже используется');
     }
 
     const role = await this.roleService.findOne(command.role);
 
     if (!role) {
-      throw new Error('Роли не существует');
+      throw new BadRequestException('Роли не существует');
     }
 
     const user = await this.usersService.createUser(command, role);
