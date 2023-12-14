@@ -30,7 +30,7 @@ export class ProgramService {
         });
 
       case RoleTypeKey.student:
-        throw new BadRequestException('Программа студентов в подписках');
+        return this.repo.find();
 
       default:
         return this.repo.find();
