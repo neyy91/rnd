@@ -88,4 +88,21 @@ export class ProgramService {
       };
     });
   }
+
+  async removeProgram(id, user) {
+    const exist = await this.repo.findOne({
+      where: {
+        id,
+        ownerId: user.userId,
+      },
+    });
+
+    if (exist) {
+      throw new BadRequestException(
+        'Программа уже существует или у нее другой владелец',
+      );
+    }
+
+    return this.repo.remove(exist);
+  }
 }

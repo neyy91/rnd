@@ -5,6 +5,9 @@ import {
   Post,
   UseGuards,
   Request,
+  Delete,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CreateProgramCommand } from 'src/dto';
 import { ProgramService } from './program.service';
@@ -30,5 +33,14 @@ export class ProgramController {
   @Post()
   async addProgram(@Request() req, @Body() command: CreateProgramCommand) {
     return this.service.addProgram(command, req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:progId')
+  async removeProgram(
+    @Request() req,
+    @Param('progId', new ParseIntPipe()) progId: number,
+  ) {
+    return this.service.removeProgram(progId, req.user);
   }
 }
