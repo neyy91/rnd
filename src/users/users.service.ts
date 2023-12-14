@@ -4,8 +4,6 @@ import { CreateBasicAccountCommand } from 'src/dto';
 import { Role, User } from 'src/infrastructure';
 import { Repository, In } from 'typeorm';
 
-// export type User = any;
-
 @Injectable()
 export class UsersService {
   constructor(
@@ -46,5 +44,11 @@ export class UsersService {
 
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
+  }
+
+  async allProfiles() {
+    return this.usersRepository.find({
+      select: ['id', 'email', 'name', 'roleId'],
+    });
   }
 }
