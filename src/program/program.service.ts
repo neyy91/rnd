@@ -27,7 +27,7 @@ export class ProgramService {
       case RoleTypeKey.teacher:
         const programs = await this.repo.find({
           where: {
-            ownerId: user.id,
+            ownerId: user.userId,
           },
         });
 
