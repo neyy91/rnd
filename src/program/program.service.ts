@@ -18,16 +18,20 @@ export class ProgramService {
 
   async getPrograms(user?) {
     if (!user) {
-      return this.repo.find();
+      const allPrograms = await this.getProgramByIds();
+
+      return allPrograms;
     }
 
     switch (user.roleName) {
       case RoleTypeKey.teacher:
-        return this.repo.find({
+        const programs = await this.repo.find({
           where: {
             ownerId: user.id,
           },
         });
+
+        return await this.getProgramByIds(programs.map((x) => x.id));
 
       case RoleTypeKey.student:
         throw new BadRequestException('Программа студентов в подписках');
@@ -64,12 +68,18 @@ export class ProgramService {
     });
   }
 
-  async getProgramByIds(ids: number[]) {
-    const programs = await this.repo.find({
-      where: {
-        id: In(ids),
-      },
-    });
+  async getProgramByIds(ids?: number[]) {
+    let req = {};
+
+    if (ids && ids.length) {
+      req = {
+        where: {
+          id: In(ids),
+        },
+      };
+    }
+
+    const programs = await this.repo.find(req);
 
     const owners = await this.userService.findByIds(
       Array.from(new Set(programs.map((x) => x.ownerId))),
@@ -83,8 +93,10 @@ export class ProgramService {
       return {
         id: x.id,
         pairName: pairs.find((y) => y.pairId === x.pairId).pairName,
+        pairId: x.pairId,
         name: x.name,
         ownerName: owners.find((y) => y.id === x.ownerId).name,
+        ownerId: x.ownerId,
       };
     });
   }
